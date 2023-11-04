@@ -38,8 +38,7 @@ for word in training_text:
     else:
         single_set.append(word)
 separated_set = []
-for sentence in sentence_set:
-    separated_set.append(" ".join(sentence))
+for sentence in sentence_set: separated_set.append(" ".join(sentence))
 
 dataset:dict = json_call(path="dataset.json", call_type="r") #load json dataset file
 for inp in separated_set:
@@ -49,9 +48,8 @@ for inp in separated_set:
         if (symbol.isalpha()) or (symbol == " "):
             symbol_list.append(symbol.lower())
     word_list = ("".join(symbol_list)).split()
-    #print(word_list) #debug
 
-    word_list_len:int = len(word_list)
+    word_list_len = len(word_list)
 
     #build dataset structure
     #append upcoming word to the previous one (word_list[index+1])
