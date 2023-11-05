@@ -1,6 +1,6 @@
 import time
 import argparse
-from transformer import json_call
+from TextDataPrep import json_call
 
 parser = argparse.ArgumentParser(description='Processes the dataset and responses to requests.')
 parser.add_argument('--inp', dest='INPUT', default="Why there is a chicken crossing road? Do you know?", type=str, help='Request input')
@@ -22,13 +22,29 @@ def filter_symbol(word:str) -> str:
     filtered_word = "".join(filtered_word)
     return str(filtered_word)
 
-def keyword_search(word:str) -> list[str] | None:
+def keyword_search(word:str):
     """Searches for keyword in dataset and returns the possible words."""
     for key in DATASET.keys():
         if str(key) == word:
             return DATASET[key]
 
+def spelling_check(word:str) -> str:
+    """Spellchecker using bag_of_words.json list. (compares index_match and len_match)"""
+    bow = json_call("bag_of_words.json", "r")
+    leader = [word, 0]
+    for bow_word in bow:
+        if len(bow_word) < len(word) - 1 or len(bow_word) > len(word) + 1:
+            continue
+        matches = 0
+        for i in range(min(len(word), len(bow_word))):
+            if word[i] == bow_word[i]:
+                matches += 1
+        if matches > leader[1]:
+            leader = [bow_word, matches]
+    return leader[0]
+
 #tokenize input
+if ("!" or "?" or ".") not in inp: inp = inp+"." #add because of type.error in *sort by sentences*
 sentence_set = []
 single_set = []
 #sort by sentences
@@ -42,7 +58,6 @@ for word in inp.split():
 input_set = []
 for sentence in sentence_set: input_set.append(" ".join(sentence))
 #output --> input_set
-print(input_set)
 
 filtered_inp_set = []
 #filter out symbols of sentence_set(input)
@@ -52,7 +67,6 @@ for single_inp in input_set:
     for word in word_list: filtered_word_list.append(filter_symbol(word))
     filtered_inp_set.append(filtered_word_list)
 #output --> input_set without symbols
-
 
 #following code probably not useful (delete/change later)
 #process input
@@ -66,8 +80,6 @@ for single_inp in filtered_inp_set:
         else: 
             next_word = None
             
-        print(word, next_word, appending_words) #debug
-
         #following snippet makes no logical sense
         #NOTE: change later and check if there is another word with the same meaning
         if (appending_words and next_word) is not None:
@@ -78,4 +90,9 @@ for single_inp in filtered_inp_set:
                     if check_next_word is not None:
                         if next_word in check_next_word:
                             single_step_word = possible_word
-                                   
+
+#spelling test
+print(filtered_inp_set)
+for set_ in filtered_inp_set:
+    for word in set_:
+        print(spelling_check(word))
