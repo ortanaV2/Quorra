@@ -3,7 +3,7 @@ import argparse
 from TextDataPrep import json_call
 
 parser = argparse.ArgumentParser(description='Processes the dataset and responses to requests.')
-parser.add_argument('--inp', dest='INPUT', default="Why there is a chicken crossing road? Do you know?", type=str, help='Request input')
+parser.add_argument('--inp', dest='INPUT', default="Why is there a chicken crossing the road? Do you know?", type=str, help='Request input')
 args = parser.parse_args()
 inp = args.INPUT
 
@@ -79,7 +79,6 @@ for single_inp in filtered_inp_set:
             next_word = single_inp[index+1] #next word from input
         else: 
             next_word = None
-            
         #following snippet makes no logical sense
         #NOTE: change later and check if there is another word with the same meaning
         if (appending_words and next_word) is not None:
@@ -90,9 +89,3 @@ for single_inp in filtered_inp_set:
                     if check_next_word is not None:
                         if next_word in check_next_word:
                             single_step_word = possible_word
-
-#spelling test
-print(filtered_inp_set)
-for set_ in filtered_inp_set:
-    for word in set_:
-        print(spelling_check(word))
