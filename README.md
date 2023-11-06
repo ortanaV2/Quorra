@@ -1,2 +1,2 @@
 # Quorra [WIP]
-Natural-Language-Processing system using data processing for grammatical changes.
+Natural language processing system that uses data processing to generate text.
