@@ -68,24 +68,4 @@ for single_inp in input_set:
     filtered_inp_set.append(filtered_word_list)
 #output --> input_set without symbols
 
-#following code probably not useful (delete/change later)
-#process input
-DATASET = json_call("dataset.json", "r")
-for single_inp in filtered_inp_set:
-    #searching for appending words chain
-    for index, word in enumerate(single_inp): 
-        appending_words = keyword_search(word) #next words according to dataset
-        if (index+1) < len(single_inp): 
-            next_word = single_inp[index+1] #next word from input
-        else: 
-            next_word = None
-        #following snippet makes no logical sense
-        #NOTE: change later and check if there is another word with the same meaning
-        if (appending_words and next_word) is not None:
-            if next_word not in appending_words:
-                #check if other word links to next_word and put it behind it (is this) --> (this is)
-                for possible_word in appending_words:
-                    check_next_word = keyword_search(possible_word)
-                    if check_next_word is not None:
-                        if next_word in check_next_word:
-                            single_step_word = possible_word
+# --> following new processing system
