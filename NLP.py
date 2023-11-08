@@ -1,4 +1,3 @@
-import time
 import argparse
 from TextDataPrep import json_call
 
@@ -69,3 +68,4 @@ for single_inp in input_set:
 #output --> input_set without symbols
 
 # --> following new processing system
+DATASET = json_call("dataset.json", "r")
